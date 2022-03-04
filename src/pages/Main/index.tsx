@@ -3,7 +3,7 @@ import Basic from "../../components/Basic/Basic";
 import Bounds from "../../components/Bounds/Bounds";
 import Filter from "../../components/Filter/Filter";
 import Menus from "../../components/Menus/Menus";
-import Radius from "../../components/Radius/Radius";
+import MyLocation from "../../components/MyLocation/MyLocation";
 import { Container } from "../../styles/global-style";
 
 export interface IProps {
@@ -12,15 +12,16 @@ export interface IProps {
 
 const menuTypes = [
   { id: 0, title: "🌎 기본지도", component: <Basic title={"🌎 기본지도"} /> },
+
   {
     id: 1,
-    title: "📍 내 위치 반경",
-    component: <Radius title={"📍 내 위치 반경"} />,
+    title: "🗽 특정장소 이동",
+    component: <Bounds title={"🗽 특정장소 이동"} />,
   },
   {
     id: 2,
-    title: "🗽 특정장소 이동",
-    component: <Bounds title={"🗽 특정장소 이동"} />,
+    title: "📍 내 위치 반경",
+    component: <MyLocation title={"📍 내 위치 반경"} />,
   },
   { id: 3, title: "🔍 필터", component: <Filter title={"🔍 필터"} /> },
 ];

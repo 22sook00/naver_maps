@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { FC, useEffect, useState } from "react";
-import { StyledFlexBox, StyledMapBound } from "./MapBoundStyles";
+import {
+  StyledDescBound,
+  StyledFlexBox,
+  StyledMapBound,
+  StyledUlBound,
+} from "./MapBoundStyles";
 import { ILatLngs, latLngs } from "../../data/latLngsData";
 import { IProps } from "../../pages/Main";
 import Button from "../Common/Buttons/Button";
@@ -40,7 +45,7 @@ const Bounds: FC<IProps> = ({ title }) => {
       // );
     };
     initMap();
-  });
+  }, []);
 
   const handleMoveCity = (e: any, cities: ILatLngs) => {
     e.preventDefault();
@@ -112,6 +117,13 @@ const Bounds: FC<IProps> = ({ title }) => {
         })}
       </StyledFlexBox>
       <StyledMapBound id="map" />
+      <StyledDescBound>
+        <StyledUlBound>
+          사용기능
+          <li>버튼 클릭 시 해당좌표로 마커찍어 이동하기</li>
+          <li>정보창(인포윈도우) 나타내고 스타일변경하기</li>
+        </StyledUlBound>
+      </StyledDescBound>
     </>
   );
 };
