@@ -13,19 +13,22 @@ const Bounds: FC<IProps> = ({ title }) => {
     const initMap = () => {
       let map = new naver.maps.Map("map", {
         center: new naver.maps.LatLng(latLngs[0].lat, latLngs[0].lng),
-        zoom: 11,
+        zoom: 10,
       });
-      let marker = null;
-      marker = new naver.maps.Marker({
-        position: new naver.maps.LatLng(latLngs[0].lat, latLngs[0].lng),
-        map: map,
-        icon: {
-          url: Marker,
-          size: new naver.maps.Size(50, 52),
-          origin: new naver.maps.Point(0, 0),
-          anchor: new naver.maps.Point(25, 26),
-        },
-      });
+
+      for (let i = 0; i < latLngs.length; i++) {
+        let marker = new naver.maps.Marker({
+          map: map,
+          title: latLngs[i].place,
+          position: new naver.maps.LatLng(latLngs[i].lat, latLngs[i].lng),
+          icon: {
+            url: Marker,
+            size: new naver.maps.Size(50, 52),
+            origin: new naver.maps.Point(0, 0),
+            anchor: new naver.maps.Point(25, 26),
+          },
+        });
+      }
       // let dokdo = new naver.maps.LatLngBounds(
       //   new naver.maps.LatLng(37.2380651, 131.8562652),
       //   new naver.maps.LatLng(37.2444436, 131.8786475)
@@ -46,14 +49,14 @@ const Bounds: FC<IProps> = ({ title }) => {
       center: new naver.maps.LatLng(latLngs[0].lat, latLngs[0].lng),
       zoom: 14,
     });
-    const filtering = latLngs.filter((data) => data.id === cities.id);
-    // const resultRadius = new naver.maps.LatLng(filtering[0].lat, filtering[0].lng);
 
+    //클릭한 곳 정보만 나타내는 필터.
+    const filtering = latLngs.filter((data) => data.id === cities.id);
     const resultRadius = new naver.maps.LatLng(
       filtering[0].lat,
       filtering[0].lng
     );
-
+    //클릭한 곳 마커표시
     let marker = new naver.maps.Marker({
       map: map,
       title: filtering[0].place,
@@ -65,6 +68,31 @@ const Bounds: FC<IProps> = ({ title }) => {
         anchor: new naver.maps.Point(25, 26),
       },
     });
+    //클릭한 곳 정보 창 표시
+    const infoWindowData = [
+      `<div class="iw_inner">
+    <h3 class = 'infoTitle'>${filtering[0].place}</h3>
+    </div>
+    `,
+    ].join("");
+
+    let infowindow = new naver.maps.InfoWindow({
+      content: infoWindowData,
+      maxWidth: 200,
+      backgroundColor: "#eee",
+      anchorColor: "#eee",
+      borderColor: "#0e960e",
+      borderWidth: 2,
+      anchorSize: new naver.maps.Size(20, 10),
+      anchorSkew: true,
+      pixelOffset: new naver.maps.Point(0, -10),
+    });
+    if (infowindow.getMap()) {
+      infowindow.close();
+    } else {
+      infowindow.open(map, marker);
+    }
+    infowindow.open(map, marker);
 
     setMoveLocation(map.setCenter(resultRadius));
   };
