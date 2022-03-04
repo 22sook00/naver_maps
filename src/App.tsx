@@ -1,10 +1,16 @@
 import "./App.css";
+import { GlobalStyle } from "./styles/global-style";
+import PageProps from "./components/Common/Layout/PageProps";
+import MainPage from "./pages/Main";
 
 function App() {
   return (
-    <div>
-      <h1>Naver Map Practice</h1>
-    </div>
+    <>
+      <GlobalStyle />
+      <PageProps>
+        <MainPage />
+      </PageProps>
+    </>
   );
 }
 
