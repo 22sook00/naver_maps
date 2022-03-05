@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import Basic from "../../components/Basic/Basic";
 import Bounds from "../../components/Bounds/Bounds";
-import Filter from "../../components/Filter/Filter";
 import Menus from "../../components/Menus/Menus";
 import MyLocation from "../../components/MyLocation/MyLocation";
 import { Container } from "../../styles/global-style";
+import Search from "../../components/Search/Search";
 
 export interface IProps {
   title: string;
 }
 
 const menuTypes = [
-  { id: 0, title: "🌎 기본지도", component: <Basic title={"🌎 기본지도"} /> },
+  { id: 0, title: "🌎 기본 지도", component: <Basic title={"🌎 기본지도"} /> },
 
   {
     id: 1,
@@ -23,7 +23,11 @@ const menuTypes = [
     title: "📍 내 위치 반경",
     component: <MyLocation title={"📍 내 위치 반경"} />,
   },
-  { id: 3, title: "🔍 필터", component: <Filter title={"🔍 필터"} /> },
+  {
+    id: 3,
+    title: "🔍 주소 검색하기",
+    component: <Search title={"🔍 주소/좌표 검색하기"} />,
+  },
 ];
 
 const MainPage = () => {

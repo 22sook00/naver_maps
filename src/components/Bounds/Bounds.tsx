@@ -47,7 +47,7 @@ const Bounds: FC<IProps> = ({ title }) => {
     initMap();
   }, []);
 
-  const handleMoveCity = (e: any, cities: ILatLngs) => {
+  const handleMoveCity = (e: React.FormEvent, cities: ILatLngs) => {
     e.preventDefault();
     let map: any = null;
     map = new naver.maps.Map("map", {
