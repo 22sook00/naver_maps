@@ -47,10 +47,10 @@ const MyLocation: FC<IProps> = ({ title }) => {
 
         const map = new naver.maps.Map("map", {
           center: new naver.maps.LatLng(currentPosition[0], currentPosition[1]),
-          zoom: 16,
+          zoom: 15,
           mapTypeId: naver.maps.MapTypeId.NORMAL,
         });
-        let marker = new naver.maps.Marker({
+        new naver.maps.Marker({
           map: map,
           title: "My Home",
           position: new naver.maps.LatLng(
@@ -63,6 +63,13 @@ const MyLocation: FC<IProps> = ({ title }) => {
             origin: new naver.maps.Point(0, 0),
             anchor: new naver.maps.Point(25, 26),
           },
+        });
+        new naver.maps.Circle({
+          map: map,
+          center: new naver.maps.LatLng(currentPosition[0], currentPosition[1]),
+          radius: 500,
+          fillColor: "yellowgreen",
+          fillOpacity: 0.3,
         });
       }
     };
@@ -82,7 +89,7 @@ const MyLocation: FC<IProps> = ({ title }) => {
               <br />
               (크롬 50버전 이후 HTTPS 환경에서만 사용 가능.)
             </li>
-            <li>내 위치 반경 3km 까지 원형으로 표시하기</li>
+            <li>내 위치 반경 0.5km 까지 원형으로 표시하기</li>
           </StyledUlMyLocation>
         </StyledDescMyLocation>
       </Wrapper>
