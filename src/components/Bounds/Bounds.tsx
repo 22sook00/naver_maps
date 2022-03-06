@@ -1,6 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { FC, useEffect, useState } from "react";
-import { StyledFlexBox, StyledMapBound } from "./MapBoundStyles";
+import {
+  StyledDescBound,
+  StyledFlexBox,
+  StyledMapBound,
+  StyledUlBound,
+} from "./MapBoundStyles";
 import { ILatLngs, latLngs } from "../../data/latLngsData";
 import { IProps } from "../../pages/Main";
 import Button from "../Common/Buttons/Button";
@@ -13,19 +18,22 @@ const Bounds: FC<IProps> = ({ title }) => {
     const initMap = () => {
       let map = new naver.maps.Map("map", {
         center: new naver.maps.LatLng(latLngs[0].lat, latLngs[0].lng),
-        zoom: 11,
+        zoom: 10,
       });
-      let marker = null;
-      marker = new naver.maps.Marker({
-        position: new naver.maps.LatLng(latLngs[0].lat, latLngs[0].lng),
-        map: map,
-        icon: {
-          url: Marker,
-          size: new naver.maps.Size(50, 52),
-          origin: new naver.maps.Point(0, 0),
-          anchor: new naver.maps.Point(25, 26),
-        },
-      });
+
+      for (let i = 0; i < latLngs.length; i++) {
+        let marker = new naver.maps.Marker({
+          map: map,
+          title: latLngs[i].place,
+          position: new naver.maps.LatLng(latLngs[i].lat, latLngs[i].lng),
+          icon: {
+            url: Marker,
+            size: new naver.maps.Size(50, 52),
+            origin: new naver.maps.Point(0, 0),
+            anchor: new naver.maps.Point(25, 26),
+          },
+        });
+      }
       // let dokdo = new naver.maps.LatLngBounds(
       //   new naver.maps.LatLng(37.2380651, 131.8562652),
       //   new naver.maps.LatLng(37.2444436, 131.8786475)
@@ -37,23 +45,23 @@ const Bounds: FC<IProps> = ({ title }) => {
       // );
     };
     initMap();
-  });
+  }, []);
 
-  const handleMoveCity = (e: any, cities: ILatLngs) => {
+  const handleMoveCity = (e: React.FormEvent, cities: ILatLngs) => {
     e.preventDefault();
     let map: any = null;
     map = new naver.maps.Map("map", {
       center: new naver.maps.LatLng(latLngs[0].lat, latLngs[0].lng),
       zoom: 14,
     });
-    const filtering = latLngs.filter((data) => data.id === cities.id);
-    // const resultRadius = new naver.maps.LatLng(filtering[0].lat, filtering[0].lng);
 
+    //클릭한 곳 정보만 나타내는 필터.
+    const filtering = latLngs.filter((data) => data.id === cities.id);
     const resultRadius = new naver.maps.LatLng(
       filtering[0].lat,
       filtering[0].lng
     );
-
+    //클릭한 곳 마커표시
     let marker = new naver.maps.Marker({
       map: map,
       title: filtering[0].place,
@@ -65,6 +73,31 @@ const Bounds: FC<IProps> = ({ title }) => {
         anchor: new naver.maps.Point(25, 26),
       },
     });
+    //클릭한 곳 정보 창 표시
+    const infoWindowData = [
+      `<div class="iw_inner">
+    <h3 class = 'infoTitle'>${filtering[0].place}</h3>
+    </div>
+    `,
+    ].join("");
+
+    let infowindow = new naver.maps.InfoWindow({
+      content: infoWindowData,
+      maxWidth: 200,
+      backgroundColor: "#eee",
+      anchorColor: "#eee",
+      borderColor: "#0e960e",
+      borderWidth: 2,
+      anchorSize: new naver.maps.Size(20, 10),
+      anchorSkew: true,
+      pixelOffset: new naver.maps.Point(0, -10),
+    });
+    if (infowindow.getMap()) {
+      infowindow.close();
+    } else {
+      infowindow.open(map, marker);
+    }
+    infowindow.open(map, marker);
 
     setMoveLocation(map.setCenter(resultRadius));
   };
@@ -84,6 +117,13 @@ const Bounds: FC<IProps> = ({ title }) => {
         })}
       </StyledFlexBox>
       <StyledMapBound id="map" />
+      <StyledDescBound>
+        <StyledUlBound>
+          사용기능
+          <li>버튼 클릭 시 해당좌표로 마커찍어 이동하기</li>
+          <li>정보창(인포윈도우) 나타내고 스타일변경하기</li>
+        </StyledUlBound>
+      </StyledDescBound>
     </>
   );
 };
